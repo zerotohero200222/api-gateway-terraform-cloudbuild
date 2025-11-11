@@ -1,0 +1,15 @@
+openapi: 3.0.0
+info:
+  title: Demo API
+  version: 1.0.0
+paths:
+  /:
+    get:
+      summary: Hello from API Gateway
+      operationId: hello
+      responses:
+        '200':
+          description: Successful response
+x-google-backend:
+  address: https://my-cloudrun-service-dev.run.app
+  protocol: h2
