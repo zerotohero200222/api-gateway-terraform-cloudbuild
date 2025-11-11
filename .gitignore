@@ -1,0 +1,15 @@
+# Terraform local state
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Terraform plan outputs
+*.tfplan
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Ignore environment variable files if needed (but you want them for Cloud Build)
+# *.tfvars
+# *.tfvars.json
