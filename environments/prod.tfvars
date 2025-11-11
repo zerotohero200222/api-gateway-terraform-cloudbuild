@@ -1,0 +1,6 @@
+project_id        = "eastern-augury-477909-q6"
+region            = "us-central1"
+environment       = "prod"
+api_id            = "my-api"
+api_display_name  = "My Demo API"
+backend_url       = "https://my-cloudrun-service-prod.run.app"
