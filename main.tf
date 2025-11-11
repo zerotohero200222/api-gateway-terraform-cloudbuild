@@ -1,3 +1,19 @@
+########################################################
+# API Gateway Terraform Configuration
+# - Creates an API Gateway API
+# - Creates an API Config using OpenAPI spec (Base64 encoded)
+# - Creates an API Gateway instance (Gateway)
+# - Uses google-beta provider for these resources
+########################################################
+
+# API definition
+resource "google_api_gateway_api" "api" {
+  provider     = google-beta
+  api_id       = "${var.api_id}-${var.environment}"
+  display_name = "${var.api_display_name}-${var.environment}"
+}
+
+# API configuration (OpenAPI spec)
 resource "google_api_gateway_api_config" "api_config" {
   provider      = google-beta
   api           = google_api_gateway_api.api.name
@@ -13,5 +29,36 @@ resource "google_api_gateway_api_config" "api_config" {
   lifecycle {
     create_before_destroy = true
   }
+}
+
+# Gateway definition
+resource "google_api_gateway_gateway" "gateway" {
+  provider    = google-beta
+  name        = "${var.api_id}-gateway-${var.environment}"
+  api_config  = google_api_gateway_api_config.api_config.name
+  location    = var.region
+
+  labels = {
+    environment = var.environment
+  }
+}
+
+########################################################
+# Outputs
+########################################################
+
+output "api_gateway_name" {
+  description = "The name of the API Gateway instance"
+  value       = google_api_gateway_gateway.gateway.name
+}
+
+output "api_gateway_region" {
+  description = "The region of the deployed API Gateway"
+  value       = google_api_gateway_gateway.gateway.location
+}
+
+output "api_gateway_url" {
+  description = "The public URL of the API Gateway"
+  value       = google_api_gateway_gateway.gateway.default_hostname
 }
 
